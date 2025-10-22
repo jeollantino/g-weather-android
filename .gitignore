@@ -1,0 +1,78 @@
+# Android Studio & IntelliJ
+*.iml
+.idea/
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
+
+# Gradle
+.gradle/
+build/
+**/build/
+gradle-app.setting
+gradlew.bat
+gradlew
+gradle-wrapper.jar
+gradle-wrapper.properties
+
+# Local Configuration
+# (SDK paths, environment-specific configs)
+local.properties
+
+# Android Generated Files
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.ap_
+*.aab
+output-metadata.json
+
+# Logs and Reports
+*.log
+*.hprof
+
+# macOS Files
+.DS_Store
+
+# Keystore Files
+# (DO NOT COMMIT SIGNING KEYS)
+*.jks
+*.keystore
+*.pem
+*.p12
+
+# Google Services
+# (Firebase, APIs)
+google-services.json
+GoogleService-Info.plist
+
+# NDK / CMake Build Artifacts
+obj/
+libs/
+jniLibs/
+
+# Lint, Reports, and Profiling
+lint-results.xml
+lint-results.html
+lint-results.txt
+lint/
+reports/
+
+# Miscellaneous
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Jetpack Compose Previews
+.preview/
+
+# Android Studio 2023+ Metadata
+.idea/shelf/
+.idea/deploymentTargetSelector.xml
+.idea/deploymentTargetDropDown.xml
+.idea/misc.xml
+.idea/runConfigurations.xml

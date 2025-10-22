@@ -1,0 +1,12 @@
+## Template for local.properties
+# Copy this file to 'local.properties' and add your actual values
+# This file should *NOT* be checked into Version Control Systems
+
+# Location of the Android SDK
+# This will be automatically set by Android Studio
+sdk.dir=/path/to/your/android/sdk
+
+# OpenWeather API Key
+# Get your free API key at: https://openweathermap.org/api
+# Replace 'YOUR_API_KEY_HERE' with your actual API key
+OPENWEATHER_API_KEY=YOUR_API_KEY_HERE

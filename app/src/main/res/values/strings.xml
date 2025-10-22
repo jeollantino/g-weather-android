@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">GWeather</string>
+
+    <!-- Common Actions -->
+    <string name="sign_out">Sign Out</string>
+    <string name="retry">Retry</string>
+    <string name="close">Close</string>
+    <string name="error">Error</string>
+
+    <!-- Login Screen -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account">Don\'t have an account? Register</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+
+    <!-- Register Screen -->
+    <string name="create_account">Create Account</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="register">Register</string>
+    <string name="already_have_account">Already have an account? Login</string>
+
+    <!-- Current Weather Screen -->
+    <string name="last_fetched_on">Last fetched on</string>
+    <string name="feels_like">Feels Like</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind">Wind</string>
+    <string name="min_temp">Min</string>
+    <string name="max_temp">Max</string>
+    <string name="pressure">Pressure</string>
+    <string name="no_weather_data">No weather data</string>
+    <string name="load_weather">Load Weather</string>
+
+    <!-- Greetings -->
+    <string name="good_morning">Good morning, %1$s!</string>
+    <string name="good_afternoon">Good afternoon, %1$s!</string>
+    <string name="good_evening">Good evening, %1$s!</string>
+
+    <!-- Location Permission -->
+    <string name="location_permission_required">Location Permission Required</string>
+    <string name="location_permission_message">GWeather needs location access to show weather for your current location. You can still use the app, but weather data won\'t be automatically fetched.</string>
+    <string name="location_permission_denied">Location permission denied. Please grant location access.</string>
+    <string name="continue_without">Continue Without</string>
+    <string name="grant_permission">Grant Permission</string>
+
+    <!-- Weather History Screen -->
+    <string name="weather_history">Weather History</string>
+    <string name="loading_weather_history">Loading weather history…</string>
+    <string name="no_weather_history">No weather history yet</string>
+    <string name="weather_history_empty_message">Weather data will appear here after you check the weather</string>
+
+    <!-- Weather Details -->
+    <string name="sunrise">SUNRISE</string>
+    <string name="sunset">SUNSET</string>
+    <string name="sunrise_time">Sunrise time: %1$s</string>
+    <string name="sunset_time">Sunset time: %1$s</string>
+
+    <!-- Content Descriptions -->
+    <string name="temperature_description">Temperature: %1$s</string>
+    <string name="temperature_unit_description">Temperature unit: %1$s</string>
+</resources>
