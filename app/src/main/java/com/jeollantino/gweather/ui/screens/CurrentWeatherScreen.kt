@@ -22,6 +22,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -119,6 +121,7 @@ fun CurrentWeatherScreen(
         username = authState.currentUser?.username,
         onSignOut = onSignOut,
         onRefresh = { viewModel.refresh() },
+        onSearchCity = { city -> viewModel.loadWeatherByCity(city) },
         modifier = Modifier.padding(contentPadding)
     )
 }
@@ -130,6 +133,7 @@ fun CurrentWeatherContent(
     username: String?,
     onSignOut: () -> Unit,
     onRefresh: () -> Unit,
+    onSearchCity: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     WeatherGradientBackground(modifier = Modifier.fillMaxSize()) {
@@ -164,7 +168,8 @@ fun CurrentWeatherContent(
                     uiState.error != null && uiState.weatherInfo == null -> {
                         ErrorStateContent(
                             error = uiState.error,
-                            onRetry = onRefresh
+                            onRetry = onRefresh,
+                            onSearchCity = onSearchCity
                         )
                     }
                     // Success state with weather data
@@ -325,9 +330,11 @@ private fun DetailItem(label: String, value: String) {
 @Composable
 private fun ErrorStateContent(
     error: String,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    onSearchCity: (String) -> Unit
 ) {
     var showError by remember { mutableStateOf(true) }
+    var cityInput by remember { mutableStateOf("") }
 
     if (showError) {
         Box(
@@ -384,6 +391,51 @@ private fun ErrorStateContent(
                             )
                         ) {
                             Text(stringResource(R.string.retry))
+                        }
+
+                        // Manual city input section
+                        Text(
+                            text = stringResource(R.string.or_search_manually),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.White.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+
+                        OutlinedTextField(
+                            value = cityInput,
+                            onValueChange = { cityInput = it },
+                            label = { Text(stringResource(R.string.enter_city_name)) },
+                            placeholder = { Text(stringResource(R.string.city_name_placeholder)) },
+                            singleLine = true,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White,
+                                focusedBorderColor = Color.White,
+                                unfocusedBorderColor = Color.White.copy(alpha = 0.5f),
+                                focusedLabelColor = Color.White,
+                                unfocusedLabelColor = Color.White.copy(alpha = 0.7f),
+                                focusedPlaceholderColor = Color.White.copy(alpha = 0.5f),
+                                unfocusedPlaceholderColor = Color.White.copy(alpha = 0.5f),
+                                cursorColor = Color.White
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Button(
+                            onClick = {
+                                if (cityInput.isNotBlank()) {
+                                    showError = false
+                                    onSearchCity(cityInput.trim())
+                                }
+                            },
+                            enabled = cityInput.isNotBlank(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.White,
+                                contentColor = Color(0xFF2D0B57)
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(stringResource(R.string.search_city))
                         }
                     }
                 }
@@ -558,7 +610,8 @@ fun CurrentWeatherScreenPreview() {
             ),
             username = "John",
             onSignOut = {},
-            onRefresh = {}
+            onRefresh = {},
+            onSearchCity = {}
         )
     }
 }
@@ -579,7 +632,8 @@ fun CurrentWeatherScreenErrorPreview() {
             ),
             username = "John",
             onSignOut = {},
-            onRefresh = {}
+            onRefresh = {},
+            onSearchCity = {}
         )
     }
 }
@@ -622,7 +676,8 @@ fun CurrentWeatherScreenLandscapePreview() {
             ),
             username = "Jane",
             onSignOut = {},
-            onRefresh = {}
+            onRefresh = {},
+            onSearchCity = {}
         )
     }
 }
@@ -640,7 +695,8 @@ fun CurrentWeatherScreenEmptyPreview() {
             uiState = CurrentWeatherUiState(),
             username = "John",
             onSignOut = {},
-            onRefresh = {}
+            onRefresh = {},
+            onSearchCity = {}
         )
     }
 }

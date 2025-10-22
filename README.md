@@ -7,7 +7,7 @@ A modern Android weather application built with Kotlin, following MVVM architect
 - **Authentication**: Local registration and sign-in with secure credential storage
 - **Current Weather**: Real-time weather information with detailed metrics
 - **Weather History**: Persistent storage of weather data with timestamped entries
-- **Device Location**: Automatic location detection
+- **Device Location**: Automatic location detection with manual city entry fallback
 - **Weather Icon Logic**: Shows nighttime weather icon when local time ≥ 18:00
 - **Secure API Key**: API key stored in local.properties (not committed to version control)
 - **Modern UI**: Beautiful Material Design 3 interface with Jetpack Compose
@@ -200,7 +200,7 @@ The app uses the OpenWeather API with the following endpoints:
    - Check internet connection
    - Verify API key is set
    - Check OpenWeather API status
-   - Grant location permissions
+   - Grant location permissions or enter city manually
 
 3. **Authentication Issues**
    - Ensure username/email is unique during registration

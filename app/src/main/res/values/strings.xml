@@ -35,6 +35,12 @@
     <string name="no_weather_data">No weather data</string>
     <string name="load_weather">Load Weather</string>
 
+    <!-- Manual City Input -->
+    <string name="or_search_manually">Or search manually</string>
+    <string name="enter_city_name">Enter city name</string>
+    <string name="search_city">Search</string>
+    <string name="city_name_placeholder">e.g., London, New York</string>
+
     <!-- Greetings -->
     <string name="good_morning">Good morning, %1$s!</string>
     <string name="good_afternoon">Good afternoon, %1$s!</string>
