@@ -24,6 +24,7 @@ import com.jeollantino.gweather.R
 import com.jeollantino.gweather.model.AuthState
 import com.jeollantino.gweather.ui.components.WeatherGradientBackground
 import com.jeollantino.gweather.ui.viewmodel.AuthViewModel
+import com.jeollantino.gweather.util.ValidationUtils
 
 @Composable
 fun RegisterScreen(
@@ -40,6 +41,10 @@ fun RegisterScreen(
     var showPassword by remember { mutableStateOf(false) }
     var showConfirmPassword by remember { mutableStateOf(false) }
 
+    var usernameError by remember { mutableStateOf<String?>(null) }
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
+
     LaunchedEffect(Unit) {
         viewModel.clearError()
     }
@@ -50,18 +55,30 @@ fun RegisterScreen(
         }
     }
 
+    val isFormValid = username.isNotBlank() &&
+                      email.isNotBlank() &&
+                      password.isNotBlank() &&
+                      confirmPassword.isNotBlank() &&
+                      password == confirmPassword &&
+                      ValidationUtils.isValidUsername(username) &&
+                      ValidationUtils.isValidEmail(email) &&
+                      ValidationUtils.isValidPassword(password)
+
     RegisterContent(
         uiState = uiState,
         onUsernameChange = {
             username = it
+            usernameError = ValidationUtils.getUsernameError(it)
             viewModel.clearError()
         },
         onEmailChange = {
             email = it
+            emailError = ValidationUtils.getEmailError(it)
             viewModel.clearError()
         },
         onPasswordChange = {
             password = it
+            passwordError = ValidationUtils.getPasswordError(it)
             viewModel.clearError()
         },
         onConfirmPasswordChange = {
@@ -69,7 +86,11 @@ fun RegisterScreen(
             viewModel.clearError()
         },
         onRegisterClick = {
-            if (password == confirmPassword) {
+            usernameError = ValidationUtils.getUsernameError(username)
+            emailError = ValidationUtils.getEmailError(email)
+            passwordError = ValidationUtils.getPasswordError(password)
+
+            if (isFormValid) {
                 viewModel.register(username, email, password)
             }
         },
@@ -81,7 +102,11 @@ fun RegisterScreen(
         usernameValue = username,
         emailValue = email,
         passwordValue = password,
-        confirmPasswordValue = confirmPassword
+        confirmPasswordValue = confirmPassword,
+        usernameError = usernameError,
+        emailError = emailError,
+        passwordError = passwordError,
+        isFormValid = isFormValid
     )
 }
 
@@ -101,7 +126,11 @@ fun RegisterContent(
     usernameValue: String,
     emailValue: String,
     passwordValue: String,
-    confirmPasswordValue: String
+    confirmPasswordValue: String,
+    usernameError: String? = null,
+    emailError: String? = null,
+    passwordError: String? = null,
+    isFormValid: Boolean = false
 ) {
     WeatherGradientBackground(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -125,7 +154,21 @@ fun RegisterContent(
                 onValueChange = onUsernameChange,
                 label = { Text(stringResource(R.string.username), color = Color.White.copy(alpha = 0.7f)) },
                 modifier = Modifier.fillMaxWidth(),
-                isError = uiState.error != null,
+                isError = usernameError != null,
+                supportingText = usernameError?.let {
+                    {
+                        Text(
+                            text = stringResource(
+                                when (it) {
+                                    "validation_username_too_short" -> R.string.validation_username_too_short
+                                    "validation_username_invalid" -> R.string.validation_username_invalid
+                                    else -> R.string.validation_username_too_short
+                                }
+                            ),
+                            color = Color(0xFFFF6B6B)
+                        )
+                    }
+                },
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = Color.White,
@@ -146,7 +189,15 @@ fun RegisterContent(
                 label = { Text(stringResource(R.string.email), color = Color.White.copy(alpha = 0.7f)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth(),
-                isError = uiState.error != null,
+                isError = emailError != null,
+                supportingText = emailError?.let {
+                    {
+                        Text(
+                            text = stringResource(R.string.validation_email_invalid),
+                            color = Color(0xFFFF6B6B)
+                        )
+                    }
+                },
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = Color.White,
@@ -168,7 +219,21 @@ fun RegisterContent(
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
-                isError = uiState.error != null,
+                isError = passwordError != null,
+                supportingText = passwordError?.let {
+                    {
+                        Text(
+                            text = stringResource(
+                                when (it) {
+                                    "validation_password_too_short" -> R.string.validation_password_too_short
+                                    "validation_password_requirements" -> R.string.validation_password_requirements
+                                    else -> R.string.validation_password_too_short
+                                }
+                            ),
+                            color = Color(0xFFFF6B6B)
+                        )
+                    }
+                },
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = Color.White,
@@ -237,9 +302,7 @@ fun RegisterContent(
 
             Button(
                 onClick = onRegisterClick,
-                enabled = usernameValue.isNotBlank() && emailValue.isNotBlank() &&
-                        passwordValue.isNotBlank() && confirmPasswordValue.isNotBlank() &&
-                        passwordValue == confirmPasswordValue && !uiState.isLoading,
+                enabled = isFormValid && !uiState.isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -295,7 +358,11 @@ fun RegisterScreenPreview() {
         isConfirmPasswordVisible = false,
         usernameValue = "testuser",
         emailValue = "test@example.com",
-        passwordValue = "password123",
-        confirmPasswordValue = "password123"
+        passwordValue = "Password123!",
+        confirmPasswordValue = "Password123!",
+        usernameError = null,
+        emailError = null,
+        passwordError = null,
+        isFormValid = true
     )
 }

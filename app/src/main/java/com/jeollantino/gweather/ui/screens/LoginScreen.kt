@@ -24,6 +24,7 @@ import com.jeollantino.gweather.R
 import com.jeollantino.gweather.model.AuthState
 import com.jeollantino.gweather.ui.components.WeatherGradientBackground
 import com.jeollantino.gweather.ui.viewmodel.AuthViewModel
+import com.jeollantino.gweather.util.ValidationUtils
 
 @Composable
 fun LoginScreen(
@@ -37,6 +38,9 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
 
+    var usernameError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
+
     LaunchedEffect(Unit) {
         viewModel.clearError()
     }
@@ -47,22 +51,39 @@ fun LoginScreen(
         }
     }
 
+    val isFormValid = username.isNotBlank() &&
+                      password.isNotBlank() &&
+                      ValidationUtils.isValidUsername(username) &&
+                      ValidationUtils.isValidPassword(password)
+
     LoginContent(
         uiState = uiState,
         onUsernameChange = {
             username = it
+            usernameError = ValidationUtils.getUsernameError(it)
             viewModel.clearError()
         },
         onPasswordChange = {
             password = it
+            passwordError = ValidationUtils.getPasswordError(it)
             viewModel.clearError()
         },
-        onLoginClick = { viewModel.login(username, password) },
+        onLoginClick = {
+            usernameError = ValidationUtils.getUsernameError(username)
+            passwordError = ValidationUtils.getPasswordError(password)
+
+            if (isFormValid) {
+                viewModel.login(username, password)
+            }
+        },
         onNavigateToRegister = onNavigateToRegister,
         onTogglePasswordVisibility = { showPassword = !showPassword },
         isPasswordVisible = showPassword,
         usernameValue = username,
-        passwordValue = password
+        passwordValue = password,
+        usernameError = usernameError,
+        passwordError = passwordError,
+        isFormValid = isFormValid
     )
 }
 
@@ -76,7 +97,10 @@ fun LoginContent(
     onTogglePasswordVisibility: () -> Unit,
     isPasswordVisible: Boolean,
     usernameValue: String,
-    passwordValue: String
+    passwordValue: String,
+    usernameError: String? = null,
+    passwordError: String? = null,
+    isFormValid: Boolean = false
 ) {
     WeatherGradientBackground(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -100,7 +124,21 @@ fun LoginContent(
                 onValueChange = onUsernameChange,
                 label = { Text(stringResource(R.string.username), color = Color.White.copy(alpha = 0.7f)) },
                 modifier = Modifier.fillMaxWidth(),
-                isError = uiState.error != null,
+                isError = usernameError != null,
+                supportingText = usernameError?.let {
+                    {
+                        Text(
+                            text = stringResource(
+                                when (it) {
+                                    "validation_username_too_short" -> R.string.validation_username_too_short
+                                    "validation_username_invalid" -> R.string.validation_username_invalid
+                                    else -> R.string.validation_username_too_short
+                                }
+                            ),
+                            color = Color(0xFFFF6B6B)
+                        )
+                    }
+                },
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = Color.White,
@@ -122,8 +160,27 @@ fun LoginContent(
                 visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
-                isError = uiState.error != null,
-                supportingText = uiState.error?.let { { Text(it, color = Color(0xFFFF6B6B)) } },
+                isError = passwordError != null || uiState.error != null,
+                supportingText = when {
+                    passwordError != null -> {
+                        {
+                            Text(
+                                text = stringResource(
+                                    when (passwordError) {
+                                        "validation_password_too_short" -> R.string.validation_password_too_short
+                                        "validation_password_requirements" -> R.string.validation_password_requirements
+                                        else -> R.string.validation_password_too_short
+                                    }
+                                ),
+                                color = Color(0xFFFF6B6B)
+                            )
+                        }
+                    }
+                    uiState.error != null -> {
+                        { Text(uiState.error, color = Color(0xFFFF6B6B)) }
+                    }
+                    else -> null
+                },
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = Color.White,
@@ -149,7 +206,7 @@ fun LoginContent(
 
             Button(
                 onClick = onLoginClick,
-                enabled = usernameValue.isNotBlank() && passwordValue.isNotBlank() && !uiState.isLoading,
+                enabled = isFormValid && !uiState.isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -200,6 +257,9 @@ fun LoginScreenPreview() {
         onTogglePasswordVisibility = {},
         isPasswordVisible = false,
         usernameValue = "testuser",
-        passwordValue = "12345"
+        passwordValue = "Password123!",
+        usernameError = null,
+        passwordError = null,
+        isFormValid = true
     )
 }

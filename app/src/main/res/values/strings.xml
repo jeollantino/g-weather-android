@@ -24,6 +24,13 @@
     <string name="register">Register</string>
     <string name="already_have_account">Already have an account? Login</string>
 
+    <!-- Validation Messages -->
+    <string name="validation_email_invalid">Please enter a valid email address</string>
+    <string name="validation_username_too_short">Username must be at least 3 characters</string>
+    <string name="validation_username_invalid">Username must contain only letters and numbers</string>
+    <string name="validation_password_too_short">Password must be at least 8 characters</string>
+    <string name="validation_password_requirements">Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character</string>
+
     <!-- Current Weather Screen -->
     <string name="last_fetched_on">Last fetched on</string>
     <string name="feels_like">Feels Like</string>
