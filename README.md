@@ -99,7 +99,7 @@ g-weather-android
 3. **Configure the API key**
    For security, the API key is not included in the source code. This project uses a template file to show you where to place your key.
    - In the project's root directory, you will find a file named `local.properties.template`.
-   - Create a copy of this file and rename it to local.properties.
+   - Create a copy of this file and rename it to `local.properties`.
    - Open the new `local.properties` file and replace the placeholder with your actual OpenWeather API key.
     
    ```properties
