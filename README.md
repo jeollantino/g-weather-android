@@ -87,8 +87,8 @@ com.jeollantino.gweather
 
 1. **Clone the repository**
    ```bash
-   git clone
-   cd gweather
+   git clone https://github.com/jeollantino/g-weather-android.git
+   cd g-weather-android
    ```
 
 2. **Get your OpenWeather API key**
@@ -97,18 +97,20 @@ com.jeollantino.gweather
    - Generate an API key
 
 3. **Configure the API key**
-   - Create or open `local.properties` file from project's root folder and add your actual API key:
-     ```properties
-     OPENWEATHER_API_KEY=your_actual_api_key_here
-     ```
+   For security, the API key is not included in the source code. This project uses a template file to show you where to place your key.
+   - In the project's root directory, you will find a file named local.properties.template.
+   - Create a copy of this file and rename it to local.properties.
+   - Open the new local.properties file and replace the placeholder with your actual OpenWeather API key.
+    
+   ```properties
+   # In local.properties
+   OPENWEATHER_API_KEY=your_api_key_here
+   ```
    - **Note**: `local.properties` is in `.gitignore` and will not be committed to version control
 
 4. **Build and run**
-   ```bash
-   ./gradlew assembleDebug
-   ```
-
-   Or simply open the project in Android Studio and run it.
+   - Open the project in Android Studio.
+   - Click the 'Run' button to build and install the app on an emulator or a physical device.
 
 ## 🔒 Security
 
