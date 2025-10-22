@@ -200,7 +200,7 @@ The app uses the OpenWeather API with the following endpoints:
    - Check internet connection
    - Verify API key is set
    - Check OpenWeather API status
-   - Grant location permissions or enter city manually
+   - Grant location permissions
 
 3. **Authentication Issues**
    - Ensure username/email is unique during registration
