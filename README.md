@@ -7,8 +7,8 @@ A modern Android weather application built with Kotlin, following MVVM architect
 - **Authentication**: Local registration and sign-in with secure credential storage
 - **Current Weather**: Real-time weather information with detailed metrics
 - **Weather History**: Persistent storage of weather data with timestamped entries
-- **Device Location**: Automatic location detection with manual city entry fallback
-- **Moon Icon Logic**: Shows moon icon when local time ≥ 18:00
+- **Device Location**: Automatic location detection
+- **Weather Icon Logic**: Shows nighttime weather icon when local time ≥ 18:00
 - **Secure API Key**: API key stored in local.properties (not committed to version control)
 - **Modern UI**: Beautiful Material Design 3 interface with Jetpack Compose
 - **MVVM Architecture**: Clean separation of concerns with data, domain, and presentation layers
@@ -19,7 +19,7 @@ A modern Android weather application built with Kotlin, following MVVM architect
 The app follows **MVVM Architecture** with the following folder structure:
 
 ```
-com.jeollantino.gweather
+g-weather-android
 ┣ data/
 ┃ ┣ api/           (OpenWeather API service)
 ┃ ┣ repository/    (Repository implementations)
@@ -64,7 +64,7 @@ com.jeollantino.gweather
 #### Tab 1: Current Weather
 - Shows current weather conditions for device location
 - Displays temperature, weather condition, sunrise/sunset times
-- Shows moon icon when local time ≥ 18:00
+- Shows nighttime weather icon when local time ≥ 18:00
 - Includes pull-to-refresh functionality
 - Sign-out button in top bar
 
@@ -100,7 +100,7 @@ com.jeollantino.gweather
    For security, the API key is not included in the source code. This project uses a template file to show you where to place your key.
    - In the project's root directory, you will find a file named local.properties.template.
    - Create a copy of this file and rename it to local.properties.
-   - Open the new local.properties file and replace the placeholder with your actual OpenWeather API key.
+   - Open the new `local.properties` file and replace the placeholder with your actual OpenWeather API key.
     
    ```properties
    # In local.properties
